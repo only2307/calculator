@@ -30,3 +30,85 @@ let operate = (a, b, operator) => {
             break;
     }
 };
+
+function displayValue(value) {
+  displayArea.textContent += value;
+}
+
+function getDisplayValue() {
+  return displayArea.textContent;
+}
+
+function setOperator(operator) {
+  if (currentOperator == null) {
+    currentOperator = operator;
+  } 
+  else if (firstOperand && secondOperand) {
+    result = operate(Number(firstOperand), Number(secondOperand), currentOperator);
+    clearDisplay();
+    displayValue(result);
+    firstOperand = result;
+    secondOperand = null;
+    currentOperator = operator;
+  }
+}
+
+function setOperand(value) {
+  if (firstOperand == null) {
+    firstOperand = value;
+  } 
+  else {
+    secondOperand = value;
+  }
+}
+
+function clearDisplay() {
+  displayArea.textContent = "";
+}
+
+function clearAllValues() {
+  firstOperand = null;
+  secondOperand = null;
+  currentOperator = null;
+  clearDisplay();
+}
+
+function generateResult() {
+  if (firstOperand && currentOperator && !isCleared && !secondOperand) {
+    setOperand(getDisplayValue());
+    return operate(Number(firstOperand), Number(secondOperand), currentOperator);
+  } 
+  else {
+    return false;
+  }
+}
+
+numberButtons.forEach((numberButton) => {
+  numberButton.addEventListener('click', (e) => {    
+    if (!isCleared) {
+      clearDisplay();
+    }
+    displayValue(e.target.textContent);
+    isCleared = false;
+  })
+})
+
+operators.forEach((operator) => {
+  operator.addEventListener('click', (e) => {
+    setOperand(getDisplayValue());
+    setOperator(e.target.id);
+    toBeCleaned = true;
+  })
+})
+
+equalSign.addEventListener("click", () => {
+  result = generateResult();
+  clearDisplay();
+  if (result) {
+    displayValue(result);
+  }
+})
+
+clearButton.addEventListener('click', () => {
+  clearAllValues();
+})
