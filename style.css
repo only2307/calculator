@@ -93,3 +93,7 @@ body {
 #divide {
   grid-area: divide;
 }
+
+h1 {
+  margin-top: 40px;
+}
